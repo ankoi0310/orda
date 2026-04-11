@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'auth_session_state.dart';
+part 'session_state.dart';
 
-class AuthSessionCubit extends Cubit<AuthSessionState> {
-  AuthSessionCubit(this.supabaseClient)
+class SessionCubit extends Cubit<SessionState> {
+  SessionCubit(this.supabaseClient)
     : super(AuthSessionInitial()) {
     checkUserSession();
   }

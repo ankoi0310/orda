@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:orda/core/presentation/bloc/auth_session/auth_session_cubit.dart';
+import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
 import 'package:orda/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:orda/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:orda/features/auth/domain/repositories/auth_repository.dart';

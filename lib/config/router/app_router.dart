@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:orda/config/router/auth_session_listenable.dart';
-import 'package:orda/core/presentation/bloc/auth_session/auth_session_cubit.dart';
+import 'package:orda/config/router/session_listenable.dart';
+import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
 import 'package:orda/core/presentation/layout/main_layout.dart';
 import 'package:orda/di.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
@@ -29,10 +29,8 @@ class AppRouter {
   static const String checkout = '/checkout';
 
   static final config = GoRouter(
-    initialLocation: cart,
-    refreshListenable: AuthSessionListenable(
-      sl<AuthSessionCubit>().stream,
-    ),
+    initialLocation: login,
+    refreshListenable: SessionListenable(sl<SessionCubit>().stream),
     routes: [
       ShellRoute(
         builder: (context, state, child) => MultiBlocProvider(
@@ -97,22 +95,22 @@ class AppRouter {
       ),
     ],
     redirect: (context, state) {
-      final authState = sl<AuthSessionCubit>().state;
+      final authState = sl<SessionCubit>().state;
 
       final isLogin = state.matchedLocation == login;
 
       /// Nếu chưa đăng nhập
-      // if (authState is Unauthenticated) {
-      //   return isLogin ? null : login;
-      // }
+      if (authState is Unauthenticated) {
+        return isLogin ? null : login;
+      }
 
       /// Nếu đã đăng nhập
-      // if (authState is Authenticated) {
-      //   if (isLogin) {
-      //     return home;
-      //   }
-      //   return null;
-      // }
+      if (authState is Authenticated) {
+        if (isLogin) {
+          return home;
+        }
+        return null;
+      }
 
       return null;
     },
