@@ -1,30 +1,27 @@
 import 'package:orda/core/utils/typedefs.dart';
 import 'package:orda/features/cart/domain/entities/cart_item.dart';
-import 'package:orda/features/shop/data/models/menu_item_model.dart';
 
 class CartItemModel extends CartItem {
   const CartItemModel({
-    required super.menuItem,
-    required super.quantity,
+    required super.menuItemId,
+    required super.name,
+    required super.price,
+    required super.imageUrl,
   });
 
-  factory CartItemModel.fromJson(JsonData json) {
-    return CartItemModel(
-      menuItem: MenuItemModel.fromJson(json['item'] as JsonData),
-      quantity: json['quantity'] as int,
-    );
-  }
-
-  factory CartItemModel.fromEntity(CartItem cartItem) {
-    return CartItemModel(
-      menuItem: cartItem.menuItem,
-      quantity: cartItem.quantity,
-    );
-  }
+  factory CartItemModel.fromEntity(CartItem entity) => CartItemModel(
+    menuItemId: entity.menuItemId,
+    name: entity.name,
+    price: entity.price,
+    imageUrl: entity.imageUrl,
+  );
 
   JsonData toJson() {
     return {
-      'item': (menuItem as MenuItemModel).toJson(),
+      'menuItemId': menuItemId,
+      'name': name,
+      'price': price,
+      'imageUrl': imageUrl,
       'quantity': quantity,
     };
   }

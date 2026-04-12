@@ -1,52 +1,40 @@
-part of 'cart_bloc.dart';
+part of 'cart_cubit.dart';
 
-class CartState extends Equatable {
+enum CartStatus { initial, updating, updated, error }
+
+final class CartState extends Equatable {
   const CartState({
+    this.status = CartStatus.initial,
     this.items = const [],
-    this.shopId,
-    this.updatedAt,
+    this.error,
   });
 
-  /// 🔥 Deserialize (Model -> Entity)
-  factory CartState.fromJson(JsonData json) {
-    final itemsJson = (json['items'] as List?) ?? [];
+  final CartStatus status;
+  final List<CartItem> items;
+  final String? error;
 
-    return CartState(
-      items: itemsJson
-          .map(
-            (e) => CartItemModel.fromJson(e as JsonData).toEntity(),
-          )
-          .toList(),
-      shopId: json['shop_id'] as String?,
-      updatedAt: json['updated_at'] as int?,
-    );
-  }
+  bool get isUpdating => status == CartStatus.updating;
 
-  /// 🔥 Serialize (Entity -> Model)
-  JsonData toJson() {
-    return {
-      'items': items.map((e) => CartItemModel.toJson(e)).toList(),
-      'shop_id': shopId,
-      'updated_at': updatedAt,
-    };
-  }
+  bool get isUpdated => status == CartStatus.updated;
+
+  bool get isError => status == CartStatus.error;
+
+  double get total => items.fold(0, (sum, e) => sum + e.subtotal);
+
+  int get itemCount => items.fold(0, (sum, e) => sum + e.quantity);
 
   CartState copyWith({
+    CartStatus? status,
     List<CartItem>? items,
-    String? shopId,
-    int? updatedAt,
+    String? error,
   }) {
     return CartState(
+      status: status ?? this.status,
       items: items ?? this.items,
-      shopId: shopId ?? this.shopId,
-      updatedAt: updatedAt ?? this.updatedAt,
+      error: error ?? this.error,
     );
   }
 
-  final List<CartItem> items;
-  final String? shopId;
-  final int? updatedAt;
-
   @override
-  List<Object?> get props => [items, shopId, updatedAt];
+  List<Object?> get props => [status, items, error];
 }

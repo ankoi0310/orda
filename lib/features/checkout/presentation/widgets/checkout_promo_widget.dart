@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
 import 'package:orda/features/checkout/presentation/widgets/checkout_promo_code_field.dart';
 
-class CheckoutPromo extends StatelessWidget {
-  const CheckoutPromo({super.key});
+class CheckoutPromoWidget extends StatelessWidget {
+  const CheckoutPromoWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

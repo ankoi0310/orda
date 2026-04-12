@@ -20,17 +20,17 @@ TextTheme createTextTheme(
       fontWeight: FontWeight.bold,
     ),
     headlineMedium: displayTextTheme.headlineMedium,
-    headlineSmall: displayTextTheme.headlineSmall,
+    headlineSmall: bodyTextTheme.headlineSmall,
     titleLarge: displayTextTheme.titleLarge!.copyWith(
       fontWeight: FontWeight.bold,
     ),
-    titleMedium: displayTextTheme.titleMedium!.copyWith(
+    titleMedium: bodyTextTheme.titleMedium!.copyWith(
       fontWeight: FontWeight.normal,
     ),
-    titleSmall: displayTextTheme.titleSmall!.copyWith(
+    titleSmall: bodyTextTheme.titleSmall!.copyWith(
       fontWeight: FontWeight.w200,
     ),
-    bodyLarge: bodyTextTheme.bodyLarge!.copyWith(
+    bodyLarge: displayTextTheme.bodyLarge!.copyWith(
       fontWeight: FontWeight.bold,
     ),
     bodyMedium: bodyTextTheme.bodyMedium,

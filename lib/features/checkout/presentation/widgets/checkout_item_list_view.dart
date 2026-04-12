@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:orda/core/extensions/build_context_extension.dart';
-import 'package:orda/features/cart/domain/entities/cart_item.dart';
-import 'package:orda/features/checkout/presentation/widgets/checkout_item_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
+import 'package:orda/features/checkout/presentation/widgets/cart_item_card.dart';
+import 'package:orda/features/checkout/presentation/widgets/item_quantity.dart';
 
 class CheckoutItemListView extends StatelessWidget {
-  const CheckoutItemListView({required this.items, super.key});
-
-  final List<CartItem> items;
+  const CheckoutItemListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      decoration: BoxDecoration(
-        color: context.colors.surfaceContainer,
-      ),
-      child: ListView.separated(
-        itemCount: items.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return CheckoutItemCard(item: item);
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(height: 16);
-        },
-      ),
+    final state = context.watch<CartCubit>().state;
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final item = state.items[index];
+        return Stack(
+          children: [
+            CartItemCard(item: item),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: GestureDetector(
+                onTap: () => context.read<CartCubit>().removeItem(
+                  item.menuItemId,
+                ),
+                child: const Icon(Iconsax.close_circle_copy),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 8,
+              child: ItemQuantity(item: item),
+            ),
+          ],
+        );
+      },
+      itemCount: state.items.length,
     );
   }
 }

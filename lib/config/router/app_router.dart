@@ -6,7 +6,6 @@ import 'package:orda/core/presentation/layout/main_layout.dart';
 import 'package:orda/di.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:orda/features/auth/presentation/pages/login_page.dart';
-import 'package:orda/features/cart/presentation/pages/cart_page.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_page.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_success_page.dart';
 import 'package:orda/features/home/presentation/pages/home_page.dart';
@@ -25,7 +24,6 @@ class AppRouter {
   static const String profile = '/profile';
   static const String scan = '/scan';
   static const String shopDetail = '/shop';
-  static const String cart = '/cart';
   static const String checkout = '/checkout';
 
   static final config = GoRouter(
@@ -77,19 +75,16 @@ class AppRouter {
             path: shopDetail,
             builder: (context, state) => const ShopDetailPage(),
           ),
-        ],
-      ),
-      GoRoute(
-        path: cart,
-        builder: (context, state) => const CartPage(),
-      ),
-      GoRoute(
-        path: checkout,
-        builder: (context, state) => const CheckoutPage(),
-        routes: [
           GoRoute(
-            path: '/success',
-            builder: (context, state) => const CheckoutSuccessPage(),
+            path: checkout,
+            builder: (context, state) => const CheckoutPage(),
+            routes: [
+              GoRoute(
+                path: '/success',
+                builder: (context, state) =>
+                    const CheckoutSuccessPage(),
+              ),
+            ],
           ),
         ],
       ),

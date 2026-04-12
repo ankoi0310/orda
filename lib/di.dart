@@ -5,6 +5,7 @@ import 'package:orda/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:orda/features/auth/domain/repositories/auth_repository.dart';
 import 'package:orda/features/auth/domain/usecases/sign_in_with_password_use_case.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
 import 'package:orda/features/order/data/datasources/order_remote_data_source.dart';
 import 'package:orda/features/order/data/repositories/order_repository_impl.dart';
 import 'package:orda/features/order/domain/repositories/order_repository.dart';
@@ -29,7 +30,8 @@ final GetIt sl = GetIt.instance;
 Future<void> initInjection() async {
   sl
     ..registerLazySingleton(() => Supabase.instance.client)
-    ..registerLazySingleton(() => AuthSessionCubit(sl()));
+    ..registerLazySingleton(() => SessionCubit(sl()))
+    ..registerFactory(CartCubit.new);
 
   _initAuth(sl);
   _initShop(sl);

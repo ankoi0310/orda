@@ -5,7 +5,6 @@ import 'package:orda/app.dart';
 import 'package:orda/core/constant/app_constants.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
 import 'package:orda/di.dart';
-import 'package:orda/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:orda/features/user/presentation/bloc/user_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,8 +23,7 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<AuthSessionCubit>()),
-        BlocProvider(create: (_) => sl<CartBloc>()),
+        BlocProvider(create: (_) => sl<SessionCubit>()),
         BlocProvider(
           create: (_) => sl<UserBloc>()..add(GetUserProfile()),
         ),

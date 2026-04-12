@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:orda/config/gen/assets.gen.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
 import 'package:orda/core/extensions/number_extension.dart';
-import 'package:orda/features/shop/domain/entities/menu_item.dart';
+import 'package:orda/features/cart/domain/entities/cart_item.dart';
 
 class CartItemCard extends StatelessWidget {
   const CartItemCard({required this.item, super.key});
 
-  final MenuItem item;
+  final CartItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,12 @@ class CartItemCard extends StatelessWidget {
           children: [
             SizedBox(
               width: 80,
+              height: 80,
               child: ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(12),
                 child: item.imageUrl.isEmpty
                     ? Assets.images.blankItem.image(fit: BoxFit.cover)
-                    : Image.network(item.imageUrl),
+                    : Image.network(item.imageUrl, fit: BoxFit.cover),
               ),
             ),
 

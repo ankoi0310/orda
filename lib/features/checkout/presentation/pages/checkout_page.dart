@@ -1,32 +1,68 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:orda/config/router/app_router.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
 import 'package:orda/core/extensions/number_extension.dart';
-import 'package:orda/features/cart/domain/entities/cart_item.dart';
+import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
 import 'package:orda/features/checkout/presentation/widgets/checkout_item_list_view.dart';
-import 'package:orda/features/checkout/presentation/widgets/checkout_promo.dart';
+import 'package:orda/features/checkout/presentation/widgets/checkout_promo_widget.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<CartCubit>().state;
     return Scaffold(
       appBar: AppBar(title: const Text('Xác nhận đơn hàng')),
       body: SingleChildScrollView(
-        child: Column(
-          spacing: 20,
-          children: [
-            CheckoutItemListView(items: fakeCartItems),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: CheckoutPromo(),
-            ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          child: Column(
+            spacing: 20,
+            children: [
+              if (state.items.isNotEmpty)
+                const CheckoutItemListView()
+              else
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Column(
+                    spacing: 8,
+                    children: [
+                      const Icon(
+                        Iconsax.clipboard_close_copy,
+                        size: 32,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Giỏ hàng đang trống. ',
+                            ),
+                            TextSpan(
+                              text: 'Đặt món ngay',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = context.pop,
+                            ),
+                          ],
+                          style: context.textTheme.titleMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const CheckoutPromoWidget(),
+              const Divider(),
+              Column(
                 spacing: 8,
                 children: [
                   Row(
@@ -37,7 +73,7 @@ class CheckoutPage extends StatelessWidget {
                         style: context.textTheme.bodyMedium,
                       ),
                       Text(
-                        40000.toVND(),
+                        state.total.toVND(),
                         style: context.textTheme.bodyLarge,
                       ),
                     ],
@@ -57,10 +93,7 @@ class CheckoutPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -68,13 +101,13 @@ class CheckoutPage extends StatelessWidget {
                     style: context.textTheme.bodyLarge,
                   ),
                   Text(
-                    50000.toVND(),
+                    state.total.toVND(),
                     style: context.textTheme.bodyLarge,
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
@@ -87,9 +120,12 @@ class CheckoutPage extends StatelessWidget {
             spacing: 16,
             children: [
               ElevatedButton(
-                onPressed: () =>
-                    context.push('${AppRouter.checkout}/success'),
-                child: const Text('Đặt hàng'),
+                onPressed: state.items.isEmpty
+                    ? null
+                    : () => context.push(
+                        '${AppRouter.checkout}/success',
+                      ),
+                child: const Text('Xác nhận đặt hàng'),
               ),
             ],
           ),
