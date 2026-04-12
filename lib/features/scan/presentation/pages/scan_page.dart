@@ -8,7 +8,6 @@ import 'package:orda/config/router/app_router.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
 import 'package:orda/core/presentation/widgets/loading_widget.dart';
 import 'package:orda/core/utils/app_util.dart';
-import 'package:orda/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:orda/features/scan/presentation/widgets/dark_overlay.dart';
 import 'package:orda/features/scan/presentation/widgets/qr_scan_overlay.dart';
 import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
@@ -27,19 +26,15 @@ class _ScanPageState extends State<ScanPage>
   );
 
   StreamSubscription<Object?>? _subscription;
-  Barcode? _barcode;
 
   bool isProcessing = false;
 
   void _handleBarcode(BarcodeCapture capture) {
     if (mounted) {
-      setState(() {
-        _barcode = capture.barcodes.firstOrNull;
-      });
-
-      if (_barcode != null) {
+      final barcode = capture.barcodes.firstOrNull;
+      if (barcode != null) {
         context.read<ShopBloc>().add(
-          LoadShop(shopId: _barcode?.displayValue),
+          GetShop(shopId: barcode.displayValue),
         );
       }
     }
@@ -59,14 +54,14 @@ class _ScanPageState extends State<ScanPage>
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     // Stop listening to lifecycle changes.
     WidgetsBinding.instance.removeObserver(this);
     // Stop listening to the barcode events.
     unawaited(_subscription?.cancel());
     _subscription = null;
     // Dispose of the controller.
-    await controller.dispose();
+    controller.dispose();
     // Dispose the widget itself.
     super.dispose();
   }
@@ -102,12 +97,12 @@ class _ScanPageState extends State<ScanPage>
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopBloc, ShopState>(
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is ShopError) {
           setState(() {
             isProcessing = false;
           });
-          await controller.start();
+          controller.start();
 
           if (!mounted) return;
 
@@ -115,11 +110,12 @@ class _ScanPageState extends State<ScanPage>
         }
 
         if (state is ShopLoaded) {
-          await controller.stop();
-          context.read<CartBloc>().add(
-            SetShop(shopId: state.shop.id),
+          unawaited(controller.stop());
+
+          context.pushReplacement(
+            AppRouter.shopDetail,
+            extra: state.shop.id,
           );
-          context.pushReplacement(AppRouter.shopDetail);
         }
       },
       builder: (context, state) {
@@ -134,13 +130,13 @@ class _ScanPageState extends State<ScanPage>
             children: [
               MobileScanner(
                 controller: controller,
-                onDetect: (capture) async {
+                onDetect: (capture) {
                   if (isProcessing) return;
 
                   setState(() {
                     isProcessing = true;
                   });
-                  await controller.stop();
+                  controller.stop();
 
                   _handleBarcode(capture);
                 },

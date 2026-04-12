@@ -4,7 +4,7 @@ import 'package:orda/features/shop/data/models/shop_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class ShopRemoteDataSource {
-  Future<ShopModel> getShop({required String shopId});
+  Future<ShopModel> getShop(String shopId);
 }
 
 class ShopRemoteDataSourceImpl implements ShopRemoteDataSource {
@@ -13,7 +13,7 @@ class ShopRemoteDataSourceImpl implements ShopRemoteDataSource {
   final SupabaseClient client;
 
   @override
-  Future<ShopModel> getShop({required String shopId}) async {
+  Future<ShopModel> getShop(String shopId) async {
     if (!shopId.isValidUuid) {
       throw const ServerException('Mã cửa hàng không hợp lệ');
     }

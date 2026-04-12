@@ -18,10 +18,10 @@ class CartItemModel extends CartItem {
 
   JsonData toJson() {
     return {
-      'menuItemId': menuItemId,
+      'menu_item_id': menuItemId,
       'name': name,
       'price': price,
-      'imageUrl': imageUrl,
+      'image_url': imageUrl,
       'quantity': quantity,
     };
   }

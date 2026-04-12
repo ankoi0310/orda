@@ -11,9 +11,10 @@ class CheckoutItemListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<CartCubit>().state;
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      itemCount: state.items.length,
       itemBuilder: (context, index) {
         final item = state.items[index];
         return Stack(
@@ -37,7 +38,9 @@ class CheckoutItemListView extends StatelessWidget {
           ],
         );
       },
-      itemCount: state.items.length,
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 8);
+      },
     );
   }
 }

@@ -6,6 +6,12 @@ import 'package:orda/features/auth/domain/repositories/auth_repository.dart';
 import 'package:orda/features/auth/domain/usecases/sign_in_with_password_use_case.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
+import 'package:orda/features/checkout/data/datasources/checkout_remote_data_source.dart';
+import 'package:orda/features/checkout/data/repositories/checkout_repository_impl.dart';
+import 'package:orda/features/checkout/domain/repositories/checkout_repository.dart';
+import 'package:orda/features/checkout/domain/usecases/checkout_with_cash_use_case.dart';
+import 'package:orda/features/checkout/domain/usecases/initiate_payment_use_case.dart';
+import 'package:orda/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:orda/features/order/data/datasources/order_remote_data_source.dart';
 import 'package:orda/features/order/data/repositories/order_repository_impl.dart';
 import 'package:orda/features/order/domain/repositories/order_repository.dart';
@@ -15,7 +21,7 @@ import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
 import 'package:orda/features/shop/data/datasources/shop_remote_data_source.dart';
 import 'package:orda/features/shop/data/repositories/shop_repository_impl.dart';
 import 'package:orda/features/shop/domain/repositories/shop_repository.dart';
-import 'package:orda/features/shop/domain/usecases/load_shop_use_case.dart';
+import 'package:orda/features/shop/domain/usecases/get_shop_use_case.dart';
 import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:orda/features/user/data/datasource/user_remote_data_source.dart';
 import 'package:orda/features/user/data/repositories/user_repository_impl.dart';
@@ -35,6 +41,7 @@ Future<void> initInjection() async {
 
   _initAuth(sl);
   _initShop(sl);
+  _initCheckout(sl);
   _initOrder(sl);
   _initUser(sl);
 }
@@ -61,8 +68,29 @@ void _initShop(GetIt sl) {
     ..registerLazySingleton<ShopRepository>(
       () => ShopRepositoryImpl(remoteDataSource: sl()),
     )
-    ..registerLazySingleton(() => LoadShopUseCase(repository: sl()))
-    ..registerFactory(() => ShopBloc(loadShop: sl()));
+    ..registerLazySingleton(() => GetShopUseCase(repository: sl()))
+    ..registerFactory(() => ShopBloc(getShop: sl()));
+}
+
+void _initCheckout(GetIt sl) {
+  sl
+    ..registerLazySingleton<CheckoutRemoteDataSource>(
+      () => CheckoutRemoteDataSourceImpl(client: sl()),
+    )
+    ..registerLazySingleton<CheckoutRepository>(
+      () => CheckoutRepositoryImpl(remoteDataSource: sl()),
+    )
+    ..registerLazySingleton(
+      () => CheckoutWithCashUseCase(repository: sl()),
+    )
+    ..registerLazySingleton(() => InitiatePaymentUseCase())
+    ..registerFactoryParam<CheckoutCubit, String, void>(
+      (shopId, _) => CheckoutCubit(
+        shopId: shopId,
+        initiatePayment: sl(),
+        checkoutWithCash: sl(),
+      ),
+    );
 }
 
 void _initOrder(GetIt sl) {

@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:orda/core/error/exceptions.dart';
 import 'package:orda/core/error/failure.dart';
+import 'package:orda/core/extensions/string_extension.dart';
 import 'package:orda/core/utils/typedefs.dart';
 import 'package:orda/features/shop/data/datasources/shop_remote_data_source.dart';
 import 'package:orda/features/shop/domain/entities/shop.dart';
@@ -12,12 +13,16 @@ class ShopRepositoryImpl implements ShopRepository {
   final ShopRemoteDataSource remoteDataSource;
 
   @override
-  ResultFuture<Shop> loadShop({required String shopId}) async {
+  ResultFuture<Shop> loadShop(String? shopId) async {
+    if (shopId == null || !shopId.isValidUuid) {
+      return Left(ValidationFailure('Mã cửa hàng không hợp lệ'));
+    }
+
     try {
-      final shop = await remoteDataSource.getShop(shopId: shopId);
-      return right(shop);
+      final shop = await remoteDataSource.getShop(shopId);
+      return Right(shop);
     } on ServerException catch (e) {
-      return left(ValidationFailure(e.message));
+      return Left(ValidationFailure(e.message));
     }
   }
 }

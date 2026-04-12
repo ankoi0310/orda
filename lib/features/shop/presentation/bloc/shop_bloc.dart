@@ -1,31 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orda/features/shop/domain/entities/shop.dart';
-import 'package:orda/features/shop/domain/usecases/load_shop_use_case.dart';
+import 'package:orda/features/shop/domain/usecases/get_shop_use_case.dart';
 
 part 'shop_event.dart';
 part 'shop_state.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
-  ShopBloc({required LoadShopUseCase loadShop})
-    : _loadShop = loadShop,
+  ShopBloc({required GetShopUseCase getShop})
+    : _getShop = getShop,
       super(ShopInitial()) {
     on<ShopEvent>((event, emit) => emit(ShopLoading()));
-    on<LoadShop>(_onLoadShop);
+    on<GetShop>(_onGetShop);
   }
 
-  final LoadShopUseCase _loadShop;
+  final GetShopUseCase _getShop;
 
-  Future<void> _onLoadShop(
-    LoadShop event,
+  Future<void> _onGetShop(
+    GetShop event,
     Emitter<ShopState> emit,
   ) async {
-    if (event.shopId == null) {
-      emit(const ShopError('Mã cửa hàng không hợp lệ'));
-      return;
-    }
-
-    final result = await _loadShop(event.shopId!);
+    final result = await _getShop(event.shopId);
 
     result.fold(
       (failure) => emit(ShopError(failure.message)),

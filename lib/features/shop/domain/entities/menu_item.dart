@@ -26,7 +26,7 @@ class MenuItem extends Equatable {
       name: name ?? 'Spring Rolls',
       description:
           description ?? 'Crispy spring rolls with vegetables.',
-      imageUrl: imageUrl ?? 'https://example.com/spring_rolls.jpg',
+      imageUrl: imageUrl ?? '',
       price: price ?? 20000,
       isAvailable: isAvailable ?? true,
     );

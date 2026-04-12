@@ -7,8 +7,8 @@ sealed class ShopEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-final class LoadShop extends ShopEvent {
-  const LoadShop({required this.shopId});
+final class GetShop extends ShopEvent {
+  const GetShop({this.shopId});
 
   final String? shopId;
 

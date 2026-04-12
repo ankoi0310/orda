@@ -17,7 +17,7 @@ class OrderRepositoryImpl implements OrderRepository {
       final order = await remoteDataSource.getOrder(id: id);
       return right(order);
     } on ServerException catch (e) {
-      return left(ValidationFailure(e.message));
+      return left(ServerFailure(e.message));
     }
   }
 

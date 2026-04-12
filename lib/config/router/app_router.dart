@@ -6,6 +6,8 @@ import 'package:orda/core/presentation/layout/main_layout.dart';
 import 'package:orda/di.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:orda/features/auth/presentation/pages/login_page.dart';
+import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
+import 'package:orda/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_page.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_success_page.dart';
 import 'package:orda/features/home/presentation/pages/home_page.dart';
@@ -27,7 +29,7 @@ class AppRouter {
   static const String checkout = '/checkout';
 
   static final config = GoRouter(
-    initialLocation: login,
+    initialLocation: home,
     refreshListenable: SessionListenable(sl<SessionCubit>().stream),
     routes: [
       ShellRoute(
@@ -60,29 +62,47 @@ class AppRouter {
         ),
       ),
       ShellRoute(
-        builder: (context, state, child) {
-          return BlocProvider(
-            create: (_) => sl<ShopBloc>(),
-            child: child,
-          );
-        },
+        builder: (context, state, child) => BlocProvider(
+          create: (context) => sl<ShopBloc>(),
+          child: child,
+        ),
         routes: [
           GoRoute(
             path: scan,
             builder: (context, state) => const ScanPage(),
           ),
-          GoRoute(
-            path: shopDetail,
-            builder: (context, state) => const ShopDetailPage(),
-          ),
-          GoRoute(
-            path: checkout,
-            builder: (context, state) => const CheckoutPage(),
+          ShellRoute(
+            builder: (context, state, child) {
+              final shopId = state.extra is String
+                  ? state.extra! as String
+                  : null;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (_) => sl<CartCubit>()),
+                  BlocProvider(
+                    create: (_) => sl<CheckoutCubit>(param1: shopId),
+                  ),
+                ],
+                child: child,
+              );
+            },
             routes: [
               GoRoute(
-                path: '/success',
-                builder: (context, state) =>
-                    const CheckoutSuccessPage(),
+                path: shopDetail,
+                builder: (context, state) {
+                  return const ShopDetailPage();
+                },
+              ),
+              GoRoute(
+                path: checkout,
+                builder: (context, state) => const CheckoutPage(),
+                routes: [
+                  GoRoute(
+                    path: '/success',
+                    builder: (context, state) =>
+                        const CheckoutSuccessPage(),
+                  ),
+                ],
               ),
             ],
           ),
