@@ -12,7 +12,7 @@ import 'package:orda/features/checkout/presentation/pages/checkout_page.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_success_page.dart';
 import 'package:orda/features/home/presentation/pages/home_page.dart';
 import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
-import 'package:orda/features/order/presentation/pages/order_page.dart';
+import 'package:orda/features/order/presentation/pages/order_history_page.dart';
 import 'package:orda/features/scan/presentation/pages/scan_page.dart';
 import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:orda/features/shop/presentation/pages/shop_detail_page.dart';
@@ -46,7 +46,7 @@ class AppRouter {
           ),
           GoRoute(
             path: order,
-            builder: (context, state) => const OrderPage(),
+            builder: (context, state) => const OrderHistoryPage(),
           ),
           GoRoute(
             path: profile,

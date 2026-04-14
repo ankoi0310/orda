@@ -15,7 +15,7 @@ import 'package:orda/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:orda/features/order/data/datasources/order_remote_data_source.dart';
 import 'package:orda/features/order/data/repositories/order_repository_impl.dart';
 import 'package:orda/features/order/domain/repositories/order_repository.dart';
-import 'package:orda/features/order/domain/usecases/get_order_list_use_case.dart';
+import 'package:orda/features/order/domain/usecases/get_order_history_use_case.dart';
 import 'package:orda/features/order/domain/usecases/get_order_use_case.dart';
 import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
 import 'package:orda/features/shop/data/datasources/shop_remote_data_source.dart';
@@ -102,13 +102,13 @@ void _initOrder(GetIt sl) {
       () => OrderRepositoryImpl(remoteDataSource: sl()),
     )
     ..registerLazySingleton(
-      () => GetOrderListUseCase(repository: sl()),
+      () => GetOrderHistoryUseCase(repository: sl()),
     )
     ..registerLazySingleton(
       () => GetOrderDetailUseCase(repository: sl()),
     )
     ..registerFactory(
-      () => OrderBloc(getOrderList: sl(), getOrderDetail: sl()),
+      () => OrderBloc(getOrderHistory: sl(), getOrderDetail: sl()),
     );
 }
 

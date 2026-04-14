@@ -22,13 +22,13 @@ class OrderRepositoryImpl implements OrderRepository {
   }
 
   @override
-  ResultFuture<List<Order>> getOrderList({
+  ResultFuture<List<Order>> getOrders({
     DateTime? from,
     DateTime? to,
     List<String>? statuses,
   }) async {
     try {
-      final orders = await remoteDataSource.getOrderList();
+      final orders = await remoteDataSource.getOrders();
       return right(orders);
     } on ServerException catch (e) {
       return left(ValidationFailure(e.message));

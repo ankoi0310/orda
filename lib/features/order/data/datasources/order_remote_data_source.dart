@@ -4,7 +4,7 @@ import 'package:orda/features/order/data/models/order_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class OrderRemoteDataSource {
-  Future<List<OrderModel>> getOrderList({
+  Future<List<OrderModel>> getOrders({
     DateTime? from,
     DateTime? to,
     List<String>? statuses,
@@ -19,12 +19,12 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   final SupabaseClient client;
 
   @override
-  Future<List<OrderModel>> getOrderList({
+  Future<List<OrderModel>> getOrders({
     DateTime? from,
     DateTime? to,
     List<String>? statuses,
   }) async {
-    var query = client.from('orders').select();
+    var query = client.from('orders').select('*, order_items(*)');
 
     if (from != null) {
       query = query.gte('created_at', from.toIso8601String());
@@ -38,7 +38,10 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
       query = query.inFilter('status', statuses);
     }
 
-    final jsonList = await query;
+    final jsonList = await query.order(
+      'created_at',
+      ascending: false,
+    );
 
     return jsonList.map(OrderModel.fromJson).toList();
   }
