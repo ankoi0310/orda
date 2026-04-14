@@ -4,20 +4,28 @@ sealed class CheckoutState extends Equatable {
   const CheckoutState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class CheckoutInitial extends CheckoutState {}
 
-final class CheckoutLoading extends CheckoutState {}
+final class CheckoutProcessing extends CheckoutState {}
+
+final class CheckoutAwaitingPayment extends CheckoutState {
+  const CheckoutAwaitingPayment(this.paymentUrl);
+
+  final String paymentUrl; // deep link sang VNPay/Momo app
+  @override
+  List<Object?> get props => [paymentUrl];
+}
 
 final class CheckoutSuccess extends CheckoutState {
-  const CheckoutSuccess(this.result);
+  const CheckoutSuccess(this.checkoutResult);
 
-  final CheckoutResult result;
+  final CheckoutResult checkoutResult;
 
   @override
-  List<Object> get props => [result];
+  List<Object?> get props => [checkoutResult];
 }
 
 final class CheckoutError extends CheckoutState {
@@ -26,5 +34,5 @@ final class CheckoutError extends CheckoutState {
   final String message;
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

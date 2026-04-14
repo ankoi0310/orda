@@ -190,7 +190,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: const Text('Theo dõi đơn hàng của bạn'),
+                    child: const Text('Xem đơn hàng của bạn'),
                   ),
                 ],
               );

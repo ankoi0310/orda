@@ -17,9 +17,7 @@ class CheckoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartState = context
-        .watch<CartCubit>()
-        .state;
+    final cartState = context.watch<CartCubit>().state;
     return BlocConsumer<CheckoutCubit, CheckoutState>(
       listener: (context, state) async {
         if (state is CheckoutSuccess) {
@@ -36,50 +34,62 @@ class CheckoutPage extends StatelessWidget {
                 spacing: 20,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
                     child: cartState.items.isNotEmpty
                         ? const CheckoutItemListView()
                         : Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      child: Column(
-                        spacing: 8,
-                        children: [
-                          const Icon(
-                            Iconsax.clipboard_close_copy,
-                            size: 32,
-                          ),
-                          RichText(
-                            text: TextSpan(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
+                            child: Column(
+                              spacing: 8,
                               children: [
-                                const TextSpan(
-                                  text: 'Giỏ hàng đang trống. ',
+                                const Icon(
+                                  Iconsax.clipboard_close_copy,
+                                  size: 32,
                                 ),
-                                TextSpan(
-                                  text: 'Đặt món ngay',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(
+                                        text: 'Giỏ hàng đang trống. ',
+                                      ),
+                                      TextSpan(
+                                        text: 'Đặt món ngay',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        recognizer:
+                                            TapGestureRecognizer()
+                                              ..onTap = context.pop,
+                                      ),
+                                    ],
+                                    style:
+                                        context.textTheme.titleMedium,
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = context.pop,
                                 ),
                               ],
-                              style: context.textTheme.titleMedium,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
-                  Divider(thickness: 8, color: context.colors.outline),
+                  Divider(
+                    thickness: 8,
+                    color: context.colors.outline,
+                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: CheckoutPromoWidget(),
                   ),
-                  Divider(thickness: 8, color: context.colors.outline),
+                  Divider(
+                    thickness: 8,
+                    color: context.colors.outline,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
                     child: Column(
                       spacing: 16,
                       children: [
@@ -94,7 +104,8 @@ class CheckoutPage extends StatelessWidget {
                               'Xem tất cả',
                               textAlign: .end,
                               style: TextStyle(
-                                color: context.colors.onSurfaceVariant,
+                                color:
+                                    context.colors.onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -109,15 +120,20 @@ class CheckoutPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Divider(thickness: 8, color: context.colors.outline),
+                  Divider(
+                    thickness: 8,
+                    color: context.colors.outline,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
                     child: Column(
                       spacing: 8,
                       children: [
                         Row(
                           mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                              MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Tạm tính',
@@ -131,7 +147,7 @@ class CheckoutPage extends StatelessWidget {
                         ),
                         Row(
                           mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                              MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Khuyến mãi',
@@ -147,9 +163,12 @@ class CheckoutPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'Tổng tiền',
@@ -178,10 +197,9 @@ class CheckoutPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: cartState.items.isEmpty
                         ? null
-                        : () =>
-                        context.read<CheckoutCubit>().confirmCash(
-                          cartState.items,
-                        ),
+                        : () => context
+                              .read<CheckoutCubit>()
+                              .confirmCash(cartState.items),
                     child: const Text('Xác nhận đặt hàng'),
                   ),
                 ],
