@@ -11,12 +11,11 @@ import 'package:orda/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_page.dart';
 import 'package:orda/features/checkout/presentation/pages/checkout_success_page.dart';
 import 'package:orda/features/home/presentation/pages/home_page.dart';
-import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
 import 'package:orda/features/order/presentation/pages/order_history_page.dart';
 import 'package:orda/features/scan/presentation/pages/scan_page.dart';
 import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:orda/features/shop/presentation/pages/shop_detail_page.dart';
-import 'package:orda/features/user/presentation/pages/user_profile_page.dart';
+import 'package:orda/features/user/presentation/pages/account_page.dart';
 
 class AppRouter {
   static const String login = '/login';
@@ -33,12 +32,7 @@ class AppRouter {
     refreshListenable: SessionListenable(sl<SessionCubit>().stream),
     routes: [
       ShellRoute(
-        builder: (context, state, child) => MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => sl<OrderBloc>()),
-          ],
-          child: MainLayout(child: child),
-        ),
+        builder: (context, state, child) => MainLayout(child: child),
         routes: [
           GoRoute(
             path: home,
@@ -50,7 +44,7 @@ class AppRouter {
           ),
           GoRoute(
             path: profile,
-            builder: (context, state) => const UserProfilePage(),
+            builder: (context, state) => const AccountPage(),
           ),
         ],
       ),

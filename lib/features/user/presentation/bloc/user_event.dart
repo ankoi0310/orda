@@ -9,4 +9,13 @@ sealed class UserEvent extends Equatable {
 
 final class GetUserProfile extends UserEvent {}
 
+final class ChangePassword extends UserEvent {
+  const ChangePassword(this.params);
+
+  final ChangePasswordParams params;
+
+  @override
+  List<Object?> get props => [params];
+}
+
 final class SignOut extends UserEvent {}

@@ -43,7 +43,7 @@ class UserActionListTile extends StatelessWidget {
             ? Text(
                 subTitle!,
                 style: context.textTheme.labelSmall!.copyWith(
-                  color: context.colors.outline,
+                  // color: context.colors.outline,
                 ),
               )
             : null,
@@ -85,7 +85,7 @@ class UserSignOutListTile extends StatelessWidget {
       subtitle: Text(
         'Securely sign out your account',
         style: context.textTheme.labelSmall!.copyWith(
-          color: context.colors.outline,
+          // color: context.colors.outline,
         ),
       ),
       trailing: Icon(

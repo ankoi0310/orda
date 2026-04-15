@@ -9,15 +9,21 @@ sealed class UserState extends Equatable {
 
 final class UserInitial extends UserState {}
 
-final class UserProfileLoading extends UserState {}
+final class LoadingUserProfile extends UserState {}
 
-final class UserProfileLoaded extends UserState {
-  const UserProfileLoaded(this.userProfile);
+final class UpdatingUserProfile extends UserState {}
+
+final class UpdatingUserPassword extends UserState {}
+
+final class UserSuccess extends UserState {
+  const UserSuccess(this.userProfile);
 
   final UserProfile userProfile;
 }
 
-final class SignOutSuccess extends UserState {}
+final class UserUpdatePasswordSuccess extends UserState {}
+
+final class UserSignOutSuccess extends UserState {}
 
 final class UserError extends UserState {
   const UserError(this.message);

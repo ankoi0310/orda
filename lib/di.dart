@@ -26,6 +26,7 @@ import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:orda/features/user/data/datasource/user_remote_data_source.dart';
 import 'package:orda/features/user/data/repositories/user_repository_impl.dart';
 import 'package:orda/features/user/domain/repositories/user_repository.dart';
+import 'package:orda/features/user/domain/usecases/change_password_use_case.dart';
 import 'package:orda/features/user/domain/usecases/get_user_profile_use_case.dart';
 import 'package:orda/features/user/domain/usecases/sign_out_use_case.dart';
 import 'package:orda/features/user/presentation/bloc/user_bloc.dart';
@@ -83,7 +84,7 @@ void _initCheckout(GetIt sl) {
     ..registerLazySingleton(
       () => CheckoutWithCashUseCase(repository: sl()),
     )
-    ..registerLazySingleton(() => InitiatePaymentUseCase())
+    ..registerLazySingleton(InitiatePaymentUseCase.new)
     ..registerFactoryParam<CheckoutCubit, String, void>(
       (shopId, _) => CheckoutCubit(
         shopId: shopId,
@@ -123,8 +124,15 @@ void _initUser(GetIt sl) {
     ..registerLazySingleton(
       () => GetUserProfileUseCase(repository: sl()),
     )
+    ..registerLazySingleton(
+      () => ChangePasswordUseCase(repository: sl()),
+    )
     ..registerLazySingleton(() => SignOutUseCase(repository: sl()))
     ..registerFactory(
-      () => UserBloc(getUserProfile: sl(), signOut: sl()),
+      () => UserBloc(
+        getUserProfile: sl(),
+        changePassword: sl(),
+        signOut: sl(),
+      ),
     );
 }

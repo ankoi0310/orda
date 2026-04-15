@@ -17,10 +17,8 @@ class PreferencesSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Preferences',
-              style: context.textTheme.bodyLarge!.copyWith(
-                color: context.colors.outline,
-              ),
+              'Cài đặt ứng dụng',
+              style: context.textTheme.bodyLarge,
             ),
           ),
           UserActionListTile(

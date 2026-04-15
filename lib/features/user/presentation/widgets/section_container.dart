@@ -17,7 +17,7 @@ class SectionContainer extends StatelessWidget {
       padding:
           padding ?? const EdgeInsetsGeometry.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: context.colors.surfaceDim.withValues(alpha: 0.5),
+        color: context.colors.outline,
         borderRadius: BorderRadius.circular(16),
       ),
       child: child,
