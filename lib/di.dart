@@ -37,7 +37,7 @@ final GetIt sl = GetIt.instance;
 Future<void> initInjection() async {
   sl
     ..registerLazySingleton(() => Supabase.instance.client)
-    ..registerLazySingleton(() => SessionCubit(sl()))
+    ..registerLazySingleton(() => SessionCubit(supabaseClient: sl()))
     ..registerFactory(CartCubit.new);
 
   _initAuth(sl);

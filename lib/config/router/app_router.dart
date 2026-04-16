@@ -109,16 +109,15 @@ class AppRouter {
       final isLogin = state.matchedLocation == login;
 
       /// Nếu chưa đăng nhập
-      if (authState is Unauthenticated) {
+      if (!authState.isAuthenticated) {
         return isLogin ? null : login;
       }
 
       /// Nếu đã đăng nhập
-      if (authState is Authenticated) {
+      if (authState.isAuthenticated) {
         if (isLogin) {
           return home;
         }
-        return null;
       }
 
       return null;

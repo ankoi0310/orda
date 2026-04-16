@@ -3,18 +3,18 @@ import 'package:intl/intl.dart';
 extension DateTimeX on DateTime {
   /// Format theo pattern (dd/MM/yyyy, HH:mm, ...)
   String format([String pattern = 'dd/MM/yyyy']) {
-    return DateFormat(pattern, 'vi_VN').format(this);
+    return DateFormat(pattern).format(this);
   }
 
   /// Format giờ phút
-  String get hhmm => DateFormat('HH:mm', 'vi_VN').format(this);
+  String get hhmm => DateFormat('HH:mm').format(this);
 
   /// Format đầy đủ
   String get fullDateTime =>
-      DateFormat('dd/MM/yyyy HH:mm', 'vi_VN').format(this);
+      DateFormat('dd/MM/yyyy HH:mm').format(this);
 
   String get fullTimeDate {
-    return DateFormat('HH:mm, dd/MM/yyyy', 'vi_VN').format(this);
+    return DateFormat('HH:mm, dd/MM/yyyy').format(this);
   }
 
   /// So sánh cùng ngày

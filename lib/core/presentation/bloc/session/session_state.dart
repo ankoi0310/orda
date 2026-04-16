@@ -1,21 +1,16 @@
 part of 'session_cubit.dart';
 
-sealed class SessionState extends Equatable {
-  const SessionState();
+class SessionState extends Equatable {
+  const SessionState({this.user});
+
+  final User? user;
+
+  bool get isAuthenticated => user != null;
+
+  SessionState copyWith({User? user}) {
+    return SessionState(user: user ?? this.user);
+  }
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [user];
 }
-
-final class AuthSessionInitial extends SessionState {}
-
-final class Authenticated extends SessionState {
-  const Authenticated(this.user);
-
-  final User user;
-
-  @override
-  List<Object> get props => [user];
-}
-
-final class Unauthenticated extends SessionState {}
