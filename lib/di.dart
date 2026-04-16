@@ -1,5 +1,13 @@
 import 'package:get_it/get_it.dart';
+import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
+import 'package:orda/features/analytics/data/datasources/analytics_remote_data_source.dart';
+import 'package:orda/features/analytics/data/repositories/analytics_repository_impl.dart';
+import 'package:orda/features/analytics/domain/repositories/analytics_repository.dart';
+import 'package:orda/features/analytics/domain/usecases/get_monthly_stats_use_case.dart';
+import 'package:orda/features/analytics/domain/usecases/get_weekly_stats_use_case.dart';
+import 'package:orda/features/analytics/presentation/bloc/monthly_analytic/monthly_analytic_cubit.dart';
+import 'package:orda/features/analytics/presentation/bloc/weekly_analytic/weekly_analytic_cubit.dart';
 import 'package:orda/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:orda/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:orda/features/auth/domain/repositories/auth_repository.dart';
@@ -37,6 +45,7 @@ final GetIt sl = GetIt.instance;
 Future<void> initInjection() async {
   sl
     ..registerLazySingleton(() => Supabase.instance.client)
+    ..registerLazySingleton(NavigationCubit.new)
     ..registerLazySingleton(() => SessionCubit(supabaseClient: sl()))
     ..registerFactory(CartCubit.new);
 
@@ -45,6 +54,7 @@ Future<void> initInjection() async {
   _initCheckout(sl);
   _initOrder(sl);
   _initUser(sl);
+  _initAnalytics(sl);
 }
 
 void _initAuth(GetIt sl) {
@@ -108,7 +118,7 @@ void _initOrder(GetIt sl) {
     ..registerLazySingleton(
       () => GetOrderDetailUseCase(repository: sl()),
     )
-    ..registerFactory(
+    ..registerLazySingleton(
       () => OrderBloc(getOrderHistory: sl(), getOrderDetail: sl()),
     );
 }
@@ -134,5 +144,27 @@ void _initUser(GetIt sl) {
         changePassword: sl(),
         signOut: sl(),
       ),
+    );
+}
+
+void _initAnalytics(GetIt sl) {
+  sl
+    ..registerLazySingleton<AnalyticsRemoteDataSource>(
+      () => AnalyticsRemoteDataSourceImpl(client: sl()),
+    )
+    ..registerLazySingleton<AnalyticsRepository>(
+      () => AnalyticsRepositoryImpl(remoteDataSource: sl()),
+    )
+    ..registerLazySingleton(
+      () => GetMonthlyStatsUseCase(repository: sl()),
+    )
+    ..registerLazySingleton(
+      () => GetWeeklyStatsUseCase(repository: sl()),
+    )
+    ..registerLazySingleton(
+      () => MonthlyAnalyticCubit(getMonthlyStats: sl()),
+    )
+    ..registerLazySingleton(
+      () => WeeklyAnalyticCubit(getWeeklyStats: sl()),
     );
 }

@@ -12,10 +12,10 @@ class GeneralSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SectionContainer(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const .symmetric(horizontal: 16),
             child: Text(
               'Thông tin tài khoản',
               style: context.textTheme.bodyLarge!.copyWith(),
@@ -34,9 +34,9 @@ class GeneralSection extends StatelessWidget {
                 useRootNavigator: true,
                 isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.directional(
-                    topStart: Radius.circular(16),
-                    topEnd: Radius.circular(16),
+                  borderRadius: .directional(
+                    topStart: .circular(16),
+                    topEnd: .circular(16),
                   ),
                 ),
                 builder: (context) => const ChangePasswordModal(),

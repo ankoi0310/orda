@@ -21,8 +21,8 @@ class SplashPage extends StatelessWidget {
       listeners: [
         BlocListener<OrderBloc, OrderState>(
           listener: (context, state) async {
-            if (state is LoadOrderHistorySuccess) {
-              await context.push(AppRouter.home);
+            if (state is LoadingOrderHistory) {
+              context.go(AppRouter.home);
             }
           },
         ),

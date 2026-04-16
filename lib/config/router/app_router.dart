@@ -4,7 +4,10 @@ import 'package:orda/config/router/session_listenable.dart';
 import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
 import 'package:orda/core/presentation/layout/main_layout.dart';
+import 'package:orda/core/utils/app_util.dart';
 import 'package:orda/di.dart';
+import 'package:orda/features/analytics/presentation/bloc/monthly_analytic/monthly_analytic_cubit.dart';
+import 'package:orda/features/analytics/presentation/bloc/weekly_analytic/weekly_analytic_cubit.dart';
 import 'package:orda/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:orda/features/auth/presentation/pages/login_page.dart';
 import 'package:orda/features/cart/presentation/bloc/cart_cubit.dart';
@@ -45,7 +48,17 @@ class AppRouter {
         routes: [
           GoRoute(
             path: home,
-            builder: (context, state) => const HomePage(),
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => sl<MonthlyAnalyticCubit>(),
+                ),
+                BlocProvider(
+                  create: (context) => sl<WeeklyAnalyticCubit>(),
+                ),
+              ],
+              child: const HomePage(),
+            ),
           ),
           GoRoute(
             path: order,

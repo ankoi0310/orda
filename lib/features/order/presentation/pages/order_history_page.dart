@@ -7,19 +7,8 @@ import 'package:orda/features/order/domain/entities/order.dart';
 import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
 import 'package:orda/features/order/presentation/widgets/order_detail_modal.dart';
 
-class OrderHistoryPage extends StatefulWidget {
+class OrderHistoryPage extends StatelessWidget {
   const OrderHistoryPage({super.key});
-
-  @override
-  State<OrderHistoryPage> createState() => _OrderHistoryPageState();
-}
-
-class _OrderHistoryPageState extends State<OrderHistoryPage> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<OrderBloc>().add(LoadOrderHistory());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +49,11 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
                 ordersGroupedByDate.putIfAbsent(dateOnly, () => []);
                 ordersGroupedByDate[dateOnly]!.add(order);
-                print(order.createdAt);
               }
 
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const .symmetric(horizontal: 16),
                   child: Column(
                     children: ordersGroupedByDate.entries.map((
                       entry,
@@ -81,9 +69,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                             shrinkWrap: true,
                             physics:
                                 const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                            ),
+                            padding: const .symmetric(vertical: 12),
                             itemCount: orders.length,
                             itemBuilder: (context, index) {
                               final order = orders[index];
@@ -92,17 +78,13 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                   await showModalBottomSheet<void>(
                                     context: context,
                                     useRootNavigator: true,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadiusGeometry.directional(
-                                            topStart: Radius.circular(
-                                              16,
-                                            ),
-                                            topEnd: Radius.circular(
-                                              16,
-                                            ),
+                                    shape:
+                                        const RoundedRectangleBorder(
+                                          borderRadius: .directional(
+                                            topStart: .circular(16),
+                                            topEnd: .circular(16),
                                           ),
-                                    ),
+                                        ),
                                     builder: (context) {
                                       return OrderDetailModal(
                                         order: order,
@@ -111,10 +93,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const .all(16),
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(12),
+                                    borderRadius: .circular(12),
                                     border: Border.all(
                                       color: context.colors.outline,
                                     ),
@@ -148,8 +129,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                           Text(
                                             order.totalPrice.toVND(),
                                             style: const TextStyle(
-                                              fontWeight:
-                                                  FontWeight.bold,
+                                              fontWeight: .bold,
                                             ),
                                           ),
                                         ],
@@ -182,15 +162,16 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     BuildContext context,
     OrderStatus status,
   ) {
-    late Color backgroundColor, textColor;
+    late Color backgroundColor;
+    late Color textColor;
 
     switch (status) {
-      case OrderStatus.confirmed:
-      case OrderStatus.preparing:
-      case OrderStatus.completed:
+      case .confirmed:
+      case .preparing:
+      case .completed:
         backgroundColor = context.colors.outlineVariant;
         textColor = context.colors.primary;
-      case OrderStatus.cancelled:
+      case .cancelled:
         backgroundColor = context.colors.errorContainer;
         textColor = context.colors.error;
     }
@@ -198,7 +179,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         // color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
       ),
       child: Text(
         status.label,

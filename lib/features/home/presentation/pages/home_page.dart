@@ -1,69 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:orda/config/router/app_router.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
-import 'package:orda/features/home/presentation/widgets/today_overview.dart';
+import 'package:orda/features/analytics/presentation/bloc/monthly_analytic/monthly_analytic_cubit.dart';
+import 'package:orda/features/analytics/presentation/bloc/weekly_analytic/weekly_analytic_cubit.dart';
+import 'package:orda/features/home/presentation/widgets/monthly_overview.dart';
+import 'package:orda/features/home/presentation/widgets/recent_orders_section.dart';
+import 'package:orda/features/home/presentation/widgets/weekly_analytics_section.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<MonthlyAnalyticCubit>().getMonthlyStats();
+    context.read<WeeklyAnalyticCubit>().getWeeklyStats();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
+          padding: const .symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: context.colors.secondaryContainer,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(16),
-              bottomRight: Radius.circular(16),
+            color: context.colors.outlineVariant,
+            borderRadius: const .only(
+              topRight: .circular(16),
+              bottomRight: .circular(16),
             ),
           ),
           child: Text(
             'Orda xin chào ✌️',
             style: context.textTheme.titleMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: context.colors.onSecondaryContainer,
+              fontWeight: .bold,
             ),
           ),
         ),
-        actionsPadding: const EdgeInsets.only(right: 16),
+        actionsPadding: const .only(right: 16),
         actions: [
-          IconButton.filledTonal(
-            onPressed: () => context.push(AppRouter.scan),
-            style: IconButton.styleFrom(padding: EdgeInsets.zero),
-            icon: Icon(
-              Iconsax.scan_barcode_copy,
-              color: context.colors.onSecondaryContainer,
-            ),
+          GestureDetector(
+            onTap: () => context.push(AppRouter.scan),
+            child: const Icon(Iconsax.scan_barcode_copy, size: 32),
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: .all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: .stretch,
             spacing: 24,
             children: [
-              const TodayOverview(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 16,
-                children: [
-                  Text(
-                    'Thống kê',
-                    style: context.textTheme.bodyLarge,
-                  ),
-
-                  /// Chart
-                ],
-              ),
+              MonthlyOverview(),
+              WeeklyAnalyticsSection(),
+              RecentOrdersSection(),
             ],
           ),
         ),
