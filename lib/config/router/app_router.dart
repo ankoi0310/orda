@@ -15,9 +15,11 @@ import 'package:orda/features/order/presentation/pages/order_history_page.dart';
 import 'package:orda/features/scan/presentation/pages/scan_page.dart';
 import 'package:orda/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:orda/features/shop/presentation/pages/shop_detail_page.dart';
+import 'package:orda/features/splash/presentation/pages/splash_page.dart';
 import 'package:orda/features/user/presentation/pages/account_page.dart';
 
 class AppRouter {
+  static const String splash = '/splash';
   static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
@@ -28,9 +30,13 @@ class AppRouter {
   static const String checkout = '/checkout';
 
   static final config = GoRouter(
-    initialLocation: home,
+    initialLocation: splash,
     refreshListenable: SessionListenable(sl<SessionCubit>().stream),
     routes: [
+      GoRoute(
+        path: splash,
+        builder: (context, state) => const SplashPage(),
+      ),
       ShellRoute(
         builder: (context, state, child) => MainLayout(child: child),
         routes: [
