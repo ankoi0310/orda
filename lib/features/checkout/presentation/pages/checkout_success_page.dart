@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:orda/config/router/app_router.dart';
-import 'package:orda/core/enum/order_status.dart';
 import 'package:orda/core/extensions/build_context_extension.dart';
 import 'package:orda/core/extensions/date_time_extension.dart';
-import 'package:orda/core/extensions/order_status_extension.dart';
 import 'package:orda/features/checkout/presentation/bloc/checkout_bloc.dart';
+import 'package:orda/features/order/domain/entities/order.dart';
 
 class CheckoutSuccessPage extends StatelessWidget {
   const CheckoutSuccessPage({super.key});
@@ -24,13 +23,13 @@ class CheckoutSuccessPage extends StatelessWidget {
                 final result = state.checkoutResult;
 
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: .stretch,
                   spacing: 8,
                   children: [
                     SizedBox(
                       height: context.height * 0.5,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: .center,
                         spacing: 8,
                         children: [
                           const SizedBox(
@@ -47,8 +46,9 @@ class CheckoutSuccessPage extends StatelessWidget {
                           SizedBox(
                             width: context.width * .8,
                             child: Text(
-                              'Cảm ơn bạn đã đặt hàng, vui lòng chờ nhận theo số thứ tự được hiển thị',
-                              textAlign: TextAlign.center,
+                              'Cảm ơn bạn đã đặt hàng, '
+                              'vui lòng chờ nhận theo số thứ tự được hiển thị',
+                              textAlign: .center,
                               style: context.textTheme.titleMedium!
                                   .copyWith(
                                     color: context.colors.primary
@@ -60,7 +60,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                       ),
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: .stretch,
                       spacing: 8,
                       children: [
                         Text(
@@ -68,11 +68,10 @@ class CheckoutSuccessPage extends StatelessWidget {
                           style: context.textTheme.titleLarge,
                         ),
                         Container(
-                          padding: const EdgeInsetsGeometry.all(16),
+                          padding: const .all(16),
                           decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadiusGeometry.circular(16),
-                            border: Border.all(
+                            borderRadius: .circular(16),
+                            border: .all(
                               color: context.colors.outline,
                             ),
                           ),
@@ -111,13 +110,13 @@ class CheckoutSuccessPage extends StatelessWidget {
                 );
               }
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: .stretch,
                 spacing: 8,
                 children: [
                   SizedBox(
                     height: context.height * 0.5,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: .center,
                       spacing: 8,
                       children: [
                         const SizedBox(
@@ -132,8 +131,9 @@ class CheckoutSuccessPage extends StatelessWidget {
                         SizedBox(
                           width: context.width * .8,
                           child: Text(
-                            'Cảm ơn bạn đã đặt hàng, vui lòng chờ nhận theo số thứ tự được hiển thị',
-                            textAlign: TextAlign.center,
+                            'Cảm ơn bạn đã đặt hàng, '
+                            'vui lòng chờ nhận theo số thứ tự được hiển thị',
+                            textAlign: .center,
                             style: context.textTheme.titleMedium!
                                 .copyWith(
                                   color: context.colors.outline,
@@ -144,7 +144,7 @@ class CheckoutSuccessPage extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: .stretch,
                     spacing: 8,
                     children: [
                       Text(
@@ -152,14 +152,10 @@ class CheckoutSuccessPage extends StatelessWidget {
                         style: context.textTheme.bodyLarge,
                       ),
                       Container(
-                        padding: const EdgeInsetsGeometry.all(16),
+                        padding: const .all(16),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadiusGeometry.circular(
-                            16,
-                          ),
-                          border: Border.all(
-                            color: context.colors.outline,
-                          ),
+                          borderRadius: .circular(16),
+                          border: .all(color: context.colors.outline),
                         ),
                         child: Column(
                           spacing: 16,
@@ -201,10 +197,10 @@ class CheckoutSuccessPage extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         top: false,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const .all(16),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: .min,
+            crossAxisAlignment: .stretch,
             spacing: 16,
             children: [
               ElevatedButton(
@@ -224,12 +220,12 @@ class CheckoutSuccessPage extends StatelessWidget {
     required String content,
   }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: .spaceBetween,
       children: [
         Text(
           title,
           style: context.textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: .bold,
             color: context.colors.primary.withValues(alpha: .5),
           ),
         ),
@@ -262,26 +258,26 @@ class CheckoutSuccessPage extends StatelessWidget {
   }) {
     late Widget statusWidget;
     switch (status) {
-      case OrderStatus.confirmed:
+      case .confirmed:
         statusWidget = _buildStatusData(
           context,
           color: context.colors.primary,
           text: status.label,
           icon: Iconsax.tick_circle_copy,
         );
-      case OrderStatus.ready:
+      case .preparing:
         statusWidget = _buildStatusData(
           context,
           color: context.colors.primary,
           text: status.label,
         );
-      case OrderStatus.completed:
+      case .completed:
         statusWidget = _buildStatusData(
           context,
           color: context.colors.primary,
           text: status.label,
         );
-      case OrderStatus.cancelled:
+      case .cancelled:
         statusWidget = _buildStatusData(
           context,
           color: context.colors.error,
@@ -291,12 +287,12 @@ class CheckoutSuccessPage extends StatelessWidget {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: .spaceBetween,
       children: [
         Text(
           'Trạng thái',
           style: context.textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: .bold,
             color: context.colors.primary.withValues(alpha: .5),
           ),
         ),

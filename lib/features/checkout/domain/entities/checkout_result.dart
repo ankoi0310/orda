@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:orda/core/enum/order_status.dart';
+import 'package:orda/features/order/domain/entities/order.dart';
 
 class CheckoutResult extends Equatable {
   const CheckoutResult({
