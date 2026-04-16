@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orda/config/router/session_listenable.dart';
+import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
 import 'package:orda/core/presentation/layout/main_layout.dart';
 import 'package:orda/di.dart';
@@ -38,7 +39,9 @@ class AppRouter {
         builder: (context, state) => const SplashPage(),
       ),
       ShellRoute(
-        builder: (context, state, child) => MainLayout(child: child),
+        pageBuilder: (context, state, child) {
+          return NoTransitionPage(child: MainLayout(child: child));
+        },
         routes: [
           GoRoute(
             path: home,
@@ -129,4 +132,16 @@ class AppRouter {
       return null;
     },
   );
+
+  static void setupRouterListener() {
+    final navigationCubit = sl<NavigationCubit>();
+    config.routerDelegate.addListener(() {
+      final location = config.state.matchedLocation;
+      final index = getIndexFromLocation(location);
+
+      if (navigationCubit.state != index) {
+        navigationCubit.setIndex(index);
+      }
+    });
+  }
 }

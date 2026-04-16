@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:orda/core/presentation/models/nav_item.dart';
 
 TextTheme createTextTheme(
   BuildContext context,
@@ -48,4 +49,12 @@ void showSnackBar(BuildContext context, {required String content}) {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(content: Text(content)));
+}
+
+int getIndexFromLocation(String location) {
+  final index = navItems.indexWhere(
+    (item) => location.startsWith(item.route),
+  );
+
+  return index == -1 ? 0 : index;
 }
