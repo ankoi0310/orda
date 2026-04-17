@@ -45,7 +45,6 @@ class CheckoutRemoteDataSourceImpl
 
       return CheckoutResultModel.fromJson(json);
     } catch (e) {
-      print(e);
       throw const ServerException('Có lỗi khi tạo đơn hàng');
     }
   }

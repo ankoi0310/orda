@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
@@ -47,11 +46,7 @@ final GetIt sl = GetIt.instance;
 Future<void> initInjection() async {
   sl
     ..registerLazySingleton(() => Supabase.instance.client)
-    ..registerLazySingleton(() => FirebaseMessaging.instance)
-    ..registerLazySingleton(
-      () =>
-          NotificationService(firebaseMessage: sl(), supabase: sl()),
-    )
+    ..registerLazySingleton(() => NotificationService(supabase: sl()))
     ..registerLazySingleton(NavigationCubit.new)
     ..registerLazySingleton(
       () => SessionCubit(supabase: sl(), notificationService: sl()),
@@ -170,10 +165,10 @@ void _initAnalytics(GetIt sl) {
     ..registerLazySingleton(
       () => GetWeeklyStatsUseCase(repository: sl()),
     )
-    ..registerLazySingleton(
+    ..registerFactory(
       () => MonthlyAnalyticCubit(getMonthlyStats: sl()),
     )
-    ..registerLazySingleton(
+    ..registerFactory(
       () => WeeklyAnalyticCubit(getWeeklyStats: sl()),
     );
 }

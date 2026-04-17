@@ -30,15 +30,13 @@ class SessionCubit extends Cubit<SessionState> {
     }
 
     _sub = _supabase.auth.onAuthStateChange.listen((data) async {
-      if (data.event == AuthChangeEvent.signedIn) {
-        await _notificationService.requestPermission();
-
-        await _notificationService.setFcmToken();
-      }
-
       final session = data.session;
 
       if (session != null) {
+        if (data.event == AuthChangeEvent.signedIn) {
+          await _notificationService.requestPermission();
+          await _notificationService.setFcmToken();
+        }
         emit(state.copyWith(user: session.user));
       } else {
         emit(const SessionState());

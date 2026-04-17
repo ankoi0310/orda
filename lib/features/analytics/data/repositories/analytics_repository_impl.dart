@@ -26,7 +26,6 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   ResultFuture<List<WeekdayStats>> getWeeklyStats() async {
     try {
       final stats = await remoteDataSource.getWeeklyStats();
-      print(stats);
       return Right(stats);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
