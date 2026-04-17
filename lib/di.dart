@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
+import 'package:orda/core/service/firebase_cloud_message_service.dart';
 import 'package:orda/features/analytics/data/datasources/analytics_remote_data_source.dart';
 import 'package:orda/features/analytics/data/repositories/analytics_repository_impl.dart';
 import 'package:orda/features/analytics/domain/repositories/analytics_repository.dart';
@@ -45,8 +47,15 @@ final GetIt sl = GetIt.instance;
 Future<void> initInjection() async {
   sl
     ..registerLazySingleton(() => Supabase.instance.client)
+    ..registerLazySingleton(() => FirebaseMessaging.instance)
+    ..registerLazySingleton(
+      () =>
+          NotificationService(firebaseMessage: sl(), supabase: sl()),
+    )
     ..registerLazySingleton(NavigationCubit.new)
-    ..registerLazySingleton(() => SessionCubit(supabaseClient: sl()))
+    ..registerLazySingleton(
+      () => SessionCubit(supabase: sl(), notificationService: sl()),
+    )
     ..registerFactory(CartCubit.new);
 
   _initAuth(sl);

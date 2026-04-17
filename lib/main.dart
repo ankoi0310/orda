@@ -7,6 +7,7 @@ import 'package:orda/config/router/app_router.dart';
 import 'package:orda/core/constant/app_constants.dart';
 import 'package:orda/core/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:orda/core/presentation/bloc/session/session_cubit.dart';
+import 'package:orda/core/service/firebase_cloud_message_service.dart';
 import 'package:orda/di.dart';
 import 'package:orda/features/order/presentation/bloc/order_bloc.dart';
 import 'package:orda/features/user/presentation/bloc/user_bloc.dart';
@@ -28,6 +29,8 @@ void main() async {
   );
 
   await initInjection();
+
+  sl<NotificationService>().init();
 
   AppRouter.setupRouterListener();
 
